@@ -136,13 +136,15 @@ def calcMetrics(cnf_matrix):
     tn, fp, fn, tp = cnf_matrix.ravel()
     total = float(tp + tn + fp + fn)
     acc = round(100*float(tp + tn)/float(total),2)
-    sens = round(100*float(tp)/float(tp + fp),2)
-    spec = round(100*float(tn)/float(tn + fn),2)
+    sens = round(100*float(tp)/float(tp + fn),2)
+    spec = round(100*float(tn)/float(tn + fp),2)
     ba = round((sens+spec)/2,2)
     p_o = float(tp + tn)/total
     p_e = ((tp + fn)/total)*((tp + fp)/total) + ((fp + tn)/total)*((fn + tn)/total)
     kappa = round(((p_o - p_e)/(1 - p_e)), 2)
-    return total, acc, sens, spec, ba, kappa
+    ppv = round(100*(tp/(tp+fp)),2)
+    npv = round(100*(tn/(tn+fn)),2)
+    return total, acc, sens, spec, ba, kappa, ppv, npv
 # Regression
 def reg_metrics(true, pred):
     rmse = np.round(np.sqrt(sm.mean_squared_error(true, pred)),2)
